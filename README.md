@@ -14,22 +14,22 @@
 
 ### Provisionamento do Servidor
 ```bash
-# Atualizar o sistema
+ Atualizar o sistema
 sudo apt update && sudo apt upgrade -y
 
-# Instalar pacotes essenciais
+ Instalar pacotes essenciais
 sudo apt install -y curl wget vim git unzip htop net-tools
 
-# Configurar timezone
+ Configurar timezone
 sudo timedatectl set-timezone America/Sao_Paulo
 
-# Configurar hostname
+ Configurar hostname
 sudo hostnamectl set-hostname servidor-producao
 ```
 
 ### Configuração de Rede
 ```bash
-# Configurar IP estático (exemplo para Ubuntu/Debian)
+ Configurar IP estático (exemplo para Ubuntu/Debian)
 sudo nano /etc/netplan/00-installer-config.yaml
 ```
 
@@ -56,41 +56,41 @@ sudo netplan apply
 
 ### Configuração de Firewall (UFW)
 ```bash
-# Instalar UFW se não estiver instalado
+ Instalar UFW se não estiver instalado
 sudo apt install -y ufw
 
-# Configurar regras básicas
+ Configurar regras básicas
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 
-# Habilitar firewall
+ Habilitar firewall
 sudo ufw enable
 ```
 
 ### Hardening SSH
 ```bash
-# Editar configuração SSH
+ Editar configuração SSH
 sudo nano /etc/ssh/sshd_config
 ```
 
 Modificações recomendadas:
 ```
-# Desabilitar login do root via SSH
+ Desabilitar login do root via SSH
 PermitRootLogin no
 
-# Usar apenas SSH versão 2
+ Usar apenas SSH versão 2
 Protocol 2
 
-# Desabilitar autenticação por senha (usar chaves)
+ Desabilitar autenticação por senha (usar chaves)
 PasswordAuthentication no
 
-# Limitar usuários que podem acessar via SSH
+ Limitar usuários que podem acessar via SSH
 AllowUsers usuario1 usuario2
 
-# Configurar timeout
+ Configurar timeout
 ClientAliveInterval 300
 ClientAliveCountMax 2
 ```
@@ -102,10 +102,10 @@ sudo systemctl restart sshd
 
 ### Configuração de Fail2Ban
 ```bash
-# Instalar Fail2Ban
+ Instalar Fail2Ban
 sudo apt install -y fail2ban
 
-# Configurar Fail2Ban
+ Configurar Fail2Ban
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 sudo nano /etc/fail2ban/jail.local
 ```
@@ -126,10 +126,10 @@ sudo systemctl restart fail2ban
 
 ### Atualizações Automáticas de Segurança
 ```bash
-# Para Ubuntu/Debian
+ Para Ubuntu/Debian
 sudo apt install -y unattended-upgrades apt-listchanges
 
-# Configurar atualizações automáticas
+ Configurar atualizações automáticas
 sudo dpkg-reconfigure unattended-upgrades
 ```
 
@@ -359,12 +359,12 @@ handlers:
 
 ### Instalação e Configuração do Prometheus e Grafana
 ```bash
-# Instalar Prometheus
+ Instalar Prometheus
 wget https://github.com/prometheus/prometheus/releases/download/v2.40.0/prometheus-2.40.0.linux-amd64.tar.gz
 tar xvf prometheus-2.40.0.linux-amd64.tar.gz
 sudo mv prometheus-2.40.0.linux-amd64 /opt/prometheus
 
-# Configurar Prometheus como serviço
+ Configurar Prometheus como serviço
 sudo nano /etc/systemd/system/prometheus.service
 ```
 
@@ -390,37 +390,37 @@ WantedBy=multi-user.target
 ```
 
 ```bash
-# Criar usuário para Prometheus
+ Criar usuário para Prometheus
 sudo useradd --no-create-home --shell /bin/false prometheus
 sudo mkdir -p /opt/prometheus/data
 sudo chown -R prometheus:prometheus /opt/prometheus
 
-# Iniciar Prometheus
+ Iniciar Prometheus
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
 sudo systemctl enable prometheus
 
-# Instalar Grafana
+ Instalar Grafana
 sudo apt-get install -y apt-transport-https software-properties-common
 wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
 sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
 sudo apt-get update
 sudo apt-get install -y grafana
 
-# Iniciar Grafana
+ Iniciar Grafana
 sudo systemctl start grafana-server
 sudo systemctl enable grafana-server
 ```
 
 ### Configuração de Logging Centralizado com ELK Stack
 ```bash
-# Instalar Elasticsearch
+ Instalar Elasticsearch
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 sudo apt-get install apt-transport-https
 echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
 sudo apt-get update && sudo apt-get install elasticsearch
 
-# Configurar Elasticsearch
+ Configurar Elasticsearch
 sudo nano /etc/elasticsearch/elasticsearch.yml
 ```
 
@@ -431,14 +431,14 @@ http.port: 9200
 ```
 
 ```bash
-# Iniciar Elasticsearch
+ Iniciar Elasticsearch
 sudo systemctl start elasticsearch
 sudo systemctl enable elasticsearch
 
-# Instalar Kibana
+ Instalar Kibana
 sudo apt-get install kibana
 
-# Configurar Kibana
+ Configurar Kibana
 sudo nano /etc/kibana/kibana.yml
 ```
 
@@ -450,14 +450,14 @@ elasticsearch.hosts: ["http://localhost:9200"]
 ```
 
 ```bash
-# Iniciar Kibana
+ Iniciar Kibana
 sudo systemctl start kibana
 sudo systemctl enable kibana
 
-# Instalar Logstash
+ Instalar Logstash
 sudo apt-get install logstash
 
-# Configurar Logstash
+ Configurar Logstash
 sudo nano /etc/logstash/conf.d/01-syslog.conf
 ```
 
@@ -491,7 +491,7 @@ output {
 ```
 
 ```bash
-# Iniciar Logstash
+ Iniciar Logstash
 sudo systemctl start logstash
 sudo systemctl enable logstash
 ```
